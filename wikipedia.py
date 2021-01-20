@@ -9,13 +9,20 @@
 
 import wikipediaapi
 import sys
-from perlcompat import getopts
+from perlcompat import getopts,die
 
 def print_sections(sections, level=0):
         for s in sections:
                 print("%s %s - %s" % ("*" * (level + 1), s.title, s.text))
                 print_sections(s.sections, level + 1)
 
+def usage():
+    die("""\
+usage: {} [-a] [-s] [-w word] 
+  -a Show all of the article
+  -s Show the sections of the article with org format
+  -w chose word
+""".format(sys.argv[0]))
 
 def main():
     opt = getopts('asw:') or usage()
@@ -37,10 +44,10 @@ def main():
 
     if all_page:
         print(p_wiki.text)
-        print("a")
+        # print("a")
     elif section_page:
         print_sections(p_wiki.sections)
-        print("s")
+        # print("s")
     else:
         print(p_wiki.summary)
         pass
